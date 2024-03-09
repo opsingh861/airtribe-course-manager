@@ -1,38 +1,41 @@
-import mongoose from 'mongoose';
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
+import Course from './Course.js';
 
-const leadSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    phone: {
-        type: String,
-        required: true
-    },
-    linkedinProfile: {
-        type: String,
-        required: true
-    },
-    status: {
-        type: String,
-        enum: ['Accepted', 'Rejected', 'Waitlisted'],
-        default: 'Pending'
-    },
-    course: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course',
-        required: true
-    },
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment'
-    }]
+const Lead = sequelize.define('Lead', {
+  leadId: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  phone: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  linkedinProfile: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  status: {
+    type: DataTypes.ENUM('Accepted', 'Rejected', 'Waitlisted', 'Pending'),
+    defaultValue: 'Pending',
+  },
+  courseId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-const Lead = mongoose.models.Lead || mongoose.model('Lead', leadSchema);
+// Define Associations
+Lead.belongsTo(Course, { foreignKey: 'courseId' });
+Course.hasMany(Lead, { foreignKey: 'courseId' });
 
-module.exports = Lead;
+export default Lead;

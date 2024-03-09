@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import './App.css'
+import Demo from './Test';
 
 function App() {
   const [courseId, setCourseId] = useState('');
@@ -25,6 +26,7 @@ function App() {
 
         }}>Add Course</button>
       </form>
+      <Demo />
     </>
   )
 }

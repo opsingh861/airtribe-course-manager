@@ -1,77 +1,37 @@
-import Instructor from '../models/Instructor.js';
-import Course from '../models/Course.js';
+import Instructor from "../models/Instructor.js";
 
-
-export const getInstructorDetails = async (req, res) => {
-    const { userName } = req.query;
-
+export const getInstructors = async (req, res) => {
     try {
-        const instructor = await Instructor
-            .findOne({ userName })
+        console.log("getInstructors")
+        const instructors = await Instructor.findAll();
+        res.status(200).send(instructors);
+    }
+    catch (error) {
+        res.status(400).send(error);
+    }
+};
 
+export const getInstructorById = async (req, res) => {
+    try {
+        console.log(req.params.id)
+        const instructor = await Instructor.findByPk(req.params.id);
         if (!instructor) {
-            return res.status(404).json({ message: 'Instructor not found', "success": false });
+            return res.status(404).json({ message: "Instructor not found" });
         }
-
-        res.status(200).json({ instructor, "success": true });
+        res.status(200).send(instructor);
     }
     catch (error) {
-        res.status(500).json({ message: 'Something went wrong', "success": false });
+        res.status(400).send(error);
     }
 }
 
-export const addCourse = async (req, res) => {
-    const { courseId, name, maxSeats, startDate, userName } = req.body;
-    const [day, month, year] = startDate.split('-');
-    const parsedStartDate = new Date(`${year}-${month}-${day}`);
-
-    const instructor = await Instructor.findOne({ userName });
-    const instructorId = instructor._id;
-    const instructorName = instructor.name;
-
+export const createInstructor = async (req, res) => {
     try {
-        const course = new Course({
-            courseId,
-            name,
-            maxSeats,
-            startDate: parsedStartDate,
-            instructor: instructorName,
-            instructorId
-        });
-
-        await course.save();
-
-        res.status(201).json({ message: "Course created successfully", "success": true });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Something went wrong', "success": false });
-    }
-}
-
-export const updateCourse = async (req, res) => {
-    const { courseId, maxSeats, startDate } = req.body;
-
-
-    try {
-        const course = await Course.findOne({ courseId });
-        if (!course) {
-            return res.status(404).json({ message: 'Course not found', "success": false });
-        }
-
-        if (startDate) {
-            const [day, month, year] = startDate.split('-');
-            course.startDate = new Date(`${year}-${month}-${day}`);
-        }
-
-        if (maxSeats) {
-            course.maxSeats = maxSeats;
-        }
-
-        await course.save();
-
-        res.status(200).json({ message: "Course updated successfully", "success": true });
+        const instructor = new Instructor(req.body);
+        await instructor.save();
+        res.status(201).send(instructor);
     }
     catch (error) {
-        res.status(500).json({ message: 'Something went wrong', "success": false });
+        res.status(400).send(error);
     }
-}
+};

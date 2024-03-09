@@ -1,22 +1,33 @@
-import mongoose from 'mongoose';
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
+import Lead from './Lead.js';
+import Instructor from './Instructor.js';
 
-const commentSchema = new mongoose.Schema({
-    text: {
-        type: String,
-        required: true
-    },
-    lead: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Lead',
-        required: true
-    },
-    instructor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Instructor',
-        required: true
-    }
+const Comment = sequelize.define('Comment', {
+  commentId: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  text: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  leadId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  instructorId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-const Comment = mongoose.models.Comment || mongoose.model('Comment', commentSchema);
+// Define Associations
+Comment.belongsTo(Lead, { foreignKey: 'leadId' });
+Lead.hasMany(Comment, { foreignKey: 'leadId' });
 
-module.exports = Comment;
+Comment.belongsTo(Instructor, { foreignKey: 'instructorId' });
+Instructor.hasMany(Comment, { foreignKey: 'instructorId' });
+
+export default Comment;

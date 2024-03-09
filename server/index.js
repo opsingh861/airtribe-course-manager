@@ -1,10 +1,13 @@
 import Express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-import authRoutes from "./routes/authRoutes.js";
-import instructorRoutes from "./routes/instructorRoutes.js";
-
+import sequelize from "./config/database.js"
+// import Course from "./models/Course.js";
+// import Instructor from "./models/Instructor.js"
+// import Lead from "./models/Lead.js";
+// import Comment from "./models/Comment.js";
+import course from "./routes/course.js";
+import instructor from "./routes/instructor.js";
 
 const app = new Express();
 app.use(Express.json());
@@ -15,24 +18,21 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-app.use("/api/auth", authRoutes)
-app.use("/api/instructor", instructorRoutes)
+app.use("/api/course", course);
+app.use("/api/instructor", instructor);
 
-const connectDb = async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URL);
-        console.log('Connected to MongoDB');
-    } catch (error) {
-        console.error(error);
-    }
-};
+
+// (async () => {
+//     sequelize.sync({ force: false }).then(() => {
+//         console.log("Database Synced Successfully");
+//     }).catch((err) => {
+//         console.log(err);
+//     });
+// })();
+
+
 
 app.listen(8080, () => {
-    try {
-        connectDb();
-    }
-    catch (error) {
-        console.error(error);
-    }
+
     console.log("Server is running on port 8080");
 });
