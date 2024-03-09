@@ -22,7 +22,7 @@ const Instructor = sequelize.define('Instructor', {
   password: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
+  }
 });
 
 export default Instructor;

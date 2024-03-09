@@ -27,7 +27,7 @@ const Lead = sequelize.define('Lead', {
   status: {
     type: DataTypes.ENUM('Accepted', 'Rejected', 'Waitlisted', 'Pending'),
     defaultValue: 'Pending',
-  },
+  }, 
   courseId: {
     type: DataTypes.INTEGER,
     allowNull: false,
