@@ -2,10 +2,10 @@ import Express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import sequelize from "./config/database.js"
-// import Course from "./models/Course.js";
-// import Instructor from "./models/Instructor.js"
-// import Lead from "./models/Lead.js";
-// import Comment from "./models/Comment.js";
+import Course from "./models/Course.js";
+import Instructor from "./models/Instructor.js"
+import Lead from "./models/Lead.js";
+import Comment from "./models/Comment.js";
 import course from "./routes/course.js";
 import instructor from "./routes/instructor.js";
 
@@ -22,13 +22,13 @@ app.use("/api/course", course);
 app.use("/api/instructor", instructor);
 
 
-// (async () => {
-//     sequelize.sync({ force: false }).then(() => {
-//         console.log("Database Synced Successfully");
-//     }).catch((err) => {
-//         console.log(err);
-//     });
-// })();
+(async () => {
+    sequelize.sync({ force: false }).then(() => {
+        console.log("Database Synced Successfully");
+    }).catch((err) => {
+        console.log(err);
+    });
+})();
 
 
 

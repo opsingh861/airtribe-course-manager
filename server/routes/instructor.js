@@ -1,7 +1,7 @@
 import express from "express";
 import { createInstructor, getInstructors, getInstructorById, getInstructorCourses, updateCourseDetails } from "../controllers/instructorController.js";
 import { createCourse } from "../controllers/courseController.js";
-import { createComment, getLeads } from "../controllers/leadController.js";
+import { createComment } from "../controllers/leadController.js";
 
 const router = express.Router();
 

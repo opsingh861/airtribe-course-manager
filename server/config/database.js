@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize("airtribe", "root", "root", { dialect: "mysql", host: "localhost" });
+const sequelize = new Sequelize("airtribe", "root", "root", { dialect: "mysql", host: "db"});
 
 (async () => {
     try {
@@ -10,7 +10,5 @@ const sequelize = new Sequelize("airtribe", "root", "root", { dialect: "mysql", 
         console.error('Unable to connect to the database:', error);
     }
 })();
-
-
 
 export default sequelize;
